@@ -19,7 +19,7 @@ export const Create = () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   function validateFirstName(value) {
-    if (value.trim() && nameRegex.test(value)) {
+    if (value === "" || (value.trim() && nameRegex.test(value))) {
       setErrors((prevErrors) => ({ ...prevErrors, firstName: "" }));
       return true;
     } else {
@@ -29,7 +29,7 @@ export const Create = () => {
   }
 
   function validateLastName(value) {
-    if (value.trim() && nameRegex.test(value)) {
+    if (value === "" || (value.trim() && nameRegex.test(value))) {
       setErrors((prevErrors) => ({ ...prevErrors, lastName: "" }));
       return true;
     } else {
@@ -39,7 +39,7 @@ export const Create = () => {
   }
 
   function validateEmail(value) {
-    if (value.trim() && emailRegex.test(value)) {
+    if (value === "" || (value.trim() && emailRegex.test(value))) {
       setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
       return true;
     } else {
@@ -47,15 +47,17 @@ export const Create = () => {
       return false;
     }
   }
+
   useEffect(() => {
-    validateFirstName(firstName);
-    validateLastName(lastName);
-    validateEmail(email);
+    if (firstName !== "") validateFirstName(firstName);
+    if (lastName !== "") validateLastName(lastName);
+    if (email !== "") validateEmail(email);
   }, [firstName, lastName, email]);
 
   function validateForm() {
     return errors.firstName === "" && errors.lastName === "" && errors.email === "";
   }
+
   function pageTitle() {
     if(id) {
       return <h2 className="text-center">Update Employee Details</h2>
@@ -68,6 +70,26 @@ export const Create = () => {
 
   function saveOrUpdateEmployee(e) {
     e.preventDefault();
+    const errorsCopy = { ...errors };
+
+  if (firstName.trim() === "") {
+    errorsCopy.firstName = "First name is required";
+  }
+
+  if (lastName.trim() === "") {
+    errorsCopy.lastName = "Last name is required";
+  }
+
+  if (email.trim() === "") {
+    errorsCopy.email = "Email is required";
+  }
+
+  setErrors(errorsCopy);
+
+  if (firstName.trim() === "" || lastName.trim() === "" || email.trim() === "") {
+    return;
+  }
+
     if (validateForm()) {
       const employee = { firstName, lastName, email };
       console.log(employee);
