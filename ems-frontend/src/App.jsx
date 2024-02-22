@@ -2,7 +2,6 @@ import { useState } from 'react'
 import './App.css'
 import ListComponent from './components/ListComponent'
 import { Header } from './components/Header'
-import { Footer } from './components/Footer'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Create } from './components/Create'
 
@@ -23,7 +22,6 @@ function App() {
           {/* http://localhost:3000/edit-employee/:id */}
           <Route path='/edit-employee/:id' element={<Create/>}></Route>
         </Routes>
-        <Footer/>
       </BrowserRouter>
     </>
   )

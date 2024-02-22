@@ -1,4 +1,4 @@
-import React, { isValidElement, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createEmployee, getEmployee, updateEmployee} from "../services/EmployeeService";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,6 +13,8 @@ export const Create = () => {
     lastName: "",
     email: "",
   });
+
+  
 
   function validateForm() {
     let valid = true;
@@ -57,22 +59,28 @@ export const Create = () => {
     if (validateForm()) {
       const employee = { firstName, lastName, email };
       console.log(employee);
-
-      if(id) {
-        updateEmployee(id,employee).then((response) => {
-          console.log(response.data)
-          navigator('/employees')
-        }).catch(error => {
-          console.error(error)
-        }) 
+  
+      if (id) {
+        updateEmployee(id, employee)
+          .then((response) => {
+            console.log(response.data);
+            navigator('/employees');
+          })
+          .catch((error) => {
+            console.error(error);
+            alert(error.response.data)
+          });
       } else {
-        createEmployee(employee).then((response) => {
-          console.log(response.data);
-          navigator("/employees");
-        }).catch(error => {
-          console.error(error)
-        })
-      }      
+        createEmployee(employee)
+          .then((response) => {
+            console.log(response.data);
+            navigator('/employees');
+          })
+          .catch((error) => {
+            console.error(error);
+              alert(error.response.data)
+          });
+      }
     }
   }
 

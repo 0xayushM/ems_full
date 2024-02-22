@@ -22,4 +22,7 @@ a {
 }
 .action-button button {
   margin:0px 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

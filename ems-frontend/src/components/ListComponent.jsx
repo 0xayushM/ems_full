@@ -16,7 +16,7 @@ const ListComponent = () => {
         setEmployees(response.data);
       })
       .catch((error) => {
-        console.error("Axios error:", error);
+        console.error("Axios error:", error); 
       });
   }
 
@@ -28,13 +28,15 @@ const ListComponent = () => {
   }
   function removeEmployee(id) {
     console.log(id);
-    deleteEmployee(id)
+    if(confirm("Are you sure you want to delete the employee ?")) {
+        deleteEmployee(id)
       .then((response) => {
         getAllEmployees()
       })
       .catch((error) => {
         console.error(error);
       });
+    }
   }
 
   return (
