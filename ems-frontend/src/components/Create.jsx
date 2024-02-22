@@ -15,35 +15,47 @@ export const Create = () => {
   });
 
   
+  const nameRegex = /^[a-zA-Z]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  function validateForm() {
-    let valid = true;
-
-    const errorsCopy = { ...errors };
-
-    if (firstName.trim()) {
-      errorsCopy.firstName = "";
+  function validateFirstName(value) {
+    if (value.trim() && nameRegex.test(value)) {
+      setErrors((prevErrors) => ({ ...prevErrors, firstName: "" }));
+      return true;
     } else {
-      errorsCopy.firstName = "First name is required";
-      valid = false;
+      setErrors((prevErrors) => ({ ...prevErrors, firstName: "Invalid first name" }));
+      return false;
     }
-    if (lastName.trim()) {
-      errorsCopy.lastName = "";
-    } else {
-      errorsCopy.lastName = "Last name is required";
-      valid = false;
-    }
-    if (email.trim()) {
-      errorsCopy.email = "";
-    } else {
-      errorsCopy.email = "Email is required";
-      valid = false;
-    }
-    setErrors(errorsCopy);
-    console.log(valid)
-    return valid;
   }
 
+  function validateLastName(value) {
+    if (value.trim() && nameRegex.test(value)) {
+      setErrors((prevErrors) => ({ ...prevErrors, lastName: "" }));
+      return true;
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, lastName: "Invalid last name" }));
+      return false;
+    }
+  }
+
+  function validateEmail(value) {
+    if (value.trim() && emailRegex.test(value)) {
+      setErrors((prevErrors) => ({ ...prevErrors, email: "" }));
+      return true;
+    } else {
+      setErrors((prevErrors) => ({ ...prevErrors, email: "Invalid email address" }));
+      return false;
+    }
+  }
+  useEffect(() => {
+    validateFirstName(firstName);
+    validateLastName(lastName);
+    validateEmail(email);
+  }, [firstName, lastName, email]);
+
+  function validateForm() {
+    return errors.firstName === "" && errors.lastName === "" && errors.email === "";
+  }
   function pageTitle() {
     if(id) {
       return <h2 className="text-center">Update Employee Details</h2>
@@ -112,7 +124,7 @@ export const Create = () => {
                   name="firstName"
                   value={firstName}
                   className= {`form-control ${errors.firstName ? 'is-invalid' : ''}`}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  onChange={(e) => setFirstName(e.target.value) && validateFirstName(e.target.value)}
                 ></input>
                 {errors.firstName && <div className="invalid-feedback">{errors.firstName}</div>}
               </div>
@@ -124,7 +136,7 @@ export const Create = () => {
                   name="lastName"
                   value={lastName}
                   className= {`form-control ${errors.lastName ? 'is-invalid' : ''}`}
-                  onChange={(e) => setLastName(e.target.value)}
+                  onChange={(e) => setLastName(e.target.value) && validateLastName(e.target.value)}  
                 ></input>
                 {errors.lastName && <div className="invalid-feedback">{errors.lastName}</div>}
               </div>
@@ -136,7 +148,7 @@ export const Create = () => {
                   name="email"
                   value={email}
                   className={`form-control ${errors.email ? 'is-invalid' : ""}`}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value) && validateEmail(e.target.value)}
                 ></input>
                 {errors.email && <div className="invalid-feedback">{errors.email}</div>}
               </div>
